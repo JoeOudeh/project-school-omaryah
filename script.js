@@ -147,8 +147,8 @@ function resetSlider() {
 }
 
 if (prevBtn && nextBtn) {
-  prevBtn.addEventListener('click', () => { goToSlide(currentSlide + 1); resetSlider() })
-  nextBtn.addEventListener('click', () => { goToSlide(currentSlide - 1); resetSlider() })
+  prevBtn.addEventListener('click', () => { goToSlide(currentSlide - 1); resetSlider() })
+  nextBtn.addEventListener('click', () => { goToSlide(currentSlide + 1); resetSlider() })
 }
 
 dots.forEach(dot => {
