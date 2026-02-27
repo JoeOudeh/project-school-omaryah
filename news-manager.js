@@ -147,4 +147,7 @@ async function loadNewsOnHomepage() {
 }
 
 // تشغيل تحميل الأخبار في الصفحة الرئيسية عند تحميلها
-document.addEventListener('DOMContentLoaded', loadNewsOnHomepage);
+document.addEventListener('DOMContentLoaded', async () => {
+  // ننتظر ثانية حتى يتحمل Supabase بالكامل
+  setTimeout(loadNewsOnHomepage, 1000);
+});
