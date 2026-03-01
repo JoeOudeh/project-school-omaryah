@@ -1,8 +1,5 @@
 // ============================================================
-// news-manager.js — إدارة الأخبار
-// ============================================================
-// الأدمن يضيف أخبار جديدة من لوحة التحكم
-// وتظهر تلقائياً في الصفحة الرئيسية
+// news-manager.js — إدارة الأخبار (نسخة محدّثة)
 // ============================================================
 
 // ===== تحميل الأخبار في لوحة التحكم =====
@@ -76,22 +73,20 @@ async function saveNews() {
     category,
     content,
     image: image || null,
-    published: true   // ينشر مباشرة
+    published: true
   }]);
 
   if (error) {
+    console.error('خطأ في حفظ الخبر:', error);
     showNotification('حدث خطأ في الحفظ', 'error');
     return;
   }
 
   showNotification('تم نشر الخبر بنجاح 🎉', 'success');
   toggleAddNewsForm();
-
-  // تنظيف الحقول
   document.getElementById('newsTitle').value = '';
   document.getElementById('newsContent').value = '';
   document.getElementById('newsImage').value = '';
-
   loadAdminNews();
 }
 
@@ -115,39 +110,45 @@ async function deleteNews(id) {
 // ============================================================
 // ===== تحميل الأخبار في الصفحة الرئيسية =====
 // ============================================================
-// هذا الجزء يشتغل في index.html — يجيب الأخبار من قاعدة
-// البيانات ويعرضها مكان الأخبار الثابتة
-// ============================================================
 async function loadNewsOnHomepage() {
   const newsGrid = document.getElementById('dynamicNewsGrid');
-  if (!newsGrid) return; // مش في الصفحة الرئيسية
+  if (!newsGrid) return;
 
-  const { data, error } = await db
-    .from('news')
-    .select('*')
-    .eq('published', true)
-    .order('created_at', { ascending: false })
-    .limit(3);
+  try {
+    const { data, error } = await db
+      .from('news')
+      .select('*')
+      .eq('published', true)
+      .order('created_at', { ascending: false })
+      .limit(3);
 
-  if (error || !data?.length) return; // يبقى الديزاين الأصلي
+    if (error) {
+      console.error('خطأ في تحميل الأخبار:', error);
+      return;
+    }
 
-  newsGrid.innerHTML = data.map(n => `
-    <div class="news-card fade-in">
-      ${n.image ? `<div class="news-image"><img src="${n.image}" alt="${n.title}" loading="lazy"></div>` : ''}
-      <div class="news-content">
-        <div class="news-category">${n.category}</div>
-        <h3>${n.title}</h3>
-        <p>${n.content.substring(0, 120)}...</p>
-        <div class="news-meta">
-          <span>${new Date(n.created_at).toLocaleDateString('ar-SA', { year:'numeric', month:'long', day:'numeric' })}</span>
+    if (!data || data.length === 0) return;
+
+    newsGrid.innerHTML = data.map(n => `
+      <div class="news-card fade-in">
+        ${n.image ? `<div class="news-image"><img src="${n.image}" alt="${n.title}" loading="lazy"></div>` : ''}
+        <div class="news-content">
+          <div class="news-category">${n.category}</div>
+          <h3>${n.title}</h3>
+          <p>${n.content.substring(0, 120)}...</p>
+          <div class="news-meta">
+            <span>${new Date(n.created_at).toLocaleDateString('ar-SA', { year:'numeric', month:'long', day:'numeric' })}</span>
+          </div>
         </div>
       </div>
-    </div>
-  `).join('');
+    `).join('');
+
+  } catch(e) {
+    console.error('مشكلة في الأخبار:', e);
+  }
 }
 
-// تشغيل تحميل الأخبار في الصفحة الرئيسية عند تحميلها
-document.addEventListener('DOMContentLoaded', async () => {
-  // ننتظر ثانية حتى يتحمل Supabase بالكامل
-  setTimeout(loadNewsOnHomepage, 1000);
+// ننتظر 800ms حتى يتحمل Supabase بالكامل
+window.addEventListener('load', () => {
+  setTimeout(loadNewsOnHomepage, 800);
 });
