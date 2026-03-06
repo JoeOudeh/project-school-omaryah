@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>توثيق مشروع المدارس العمرية</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f172a; --bg2: #1e293b; --border: #334155;
+      --green: #22c55e; --blue: #3b82f6; --orange: #f59e0b;
+      --red: #ef4444; --purple: #a855f7; --text: #f1f5f9; --muted: #94a3b8;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Tajawal',sans-serif; background:var(--bg); color:var(--text); direction:rtl; }
+
+    .hero {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 3rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(34,197,94,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero h1 { font-size: 2.5rem; font-weight: 800; color: var(--green); margin-bottom: 0.5rem; }
+    .hero p { color: var(--muted); font-size: 1.1rem; margin-bottom: 1.5rem; }
+    .hero-badges { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+    .hero-badge {
+      padding: 0.4rem 1rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .container { max-width: 1000px; margin: 0 auto; padding: 2rem 1rem; }
+
+    /* Section Headers */
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--border);
+    }
+    .section-title h2 { font-size: 1.4rem; font-weight: 800; }
+    .section-icon { font-size: 1.75rem; }
+
+    /* File Cards */
+    .files-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; margin-bottom: 3rem; }
+
+    .file-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .file-card::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 4px;
+      height: 100%;
+      border-radius: 0 1rem 1rem 0;
+    }
+    .file-card.original::before { background: var(--blue); }
+    .file-card.new::before { background: var(--green); }
+    .file-card.admin::before { background: var(--purple); }
+    .file-card.setup::before { background: var(--orange); }
+
+    .file-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+
+    .file-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+    .file-emoji { font-size: 2rem; }
+    .file-name-box h3 { font-size: 1rem; font-weight: 800; font-family: monospace; }
+    .file-tag {
+      display: inline-block;
+      padding: 0.15rem 0.6rem;
+      border-radius: 9999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      margin-top: 0.2rem;
+    }
+    .tag-original { background: rgba(59,130,246,0.15); color: #60a5fa; }
+    .tag-new      { background: rgba(34,197,94,0.15); color: #4ade80; }
+    .tag-admin    { background: rgba(168,85,247,0.15); color: #c084fc; }
+    .tag-setup    { background: rgba(245,158,11,0.15); color: #fbbf24; }
+
+    .file-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.7; margin-bottom: 1rem; }
+
+    .file-points { list-style: none; }
+    .file-points li {
+      font-size: 0.83rem;
+      color: var(--text);
+      padding: 0.3rem 0;
+      border-bottom: 1px solid rgba(51,65,85,0.5);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    .file-points li:last-child { border-bottom: none; }
+    .point-icon { flex-shrink: 0; margin-top: 0.1rem; }
+
+    /* Tech Stack */
+    .tech-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 3rem; }
+    .tech-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.25rem;
+      text-align: center;
+    }
+    .tech-logo { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .tech-name { font-size: 1.1rem; font-weight: 800; color: var(--green); }
+    .tech-role { font-size: 0.85rem; color: var(--muted); margin-top: 0.25rem; }
+    .tech-free {
+      display: inline-block;
+      margin-top: 0.5rem;
+      padding: 0.2rem 0.6rem;
+      background: rgba(34,197,94,0.1);
+      border: 1px solid rgba(34,197,94,0.3);
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    /* Q&A Section */
+    .qa-list { margin-bottom: 3rem; }
+    .qa-item {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      margin-bottom: 0.75rem;
+      overflow: hidden;
+    }
+    .qa-question {
+      padding: 1.25rem 1.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 700;
+      font-size: 0.95rem;
+      transition: background 0.2s;
+      user-select: none;
+    }
+    .qa-question:hover { background: rgba(255,255,255,0.03); }
+    .qa-q-icon { color: var(--green); font-size: 1.1rem; flex-shrink: 0; }
+    .qa-arrow { margin-right: auto; color: var(--muted); transition: transform 0.3s; }
+    .qa-item.open .qa-arrow { transform: rotate(180deg); }
+    .qa-answer {
+      display: none;
+      padding: 0 1.5rem 1.25rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.8;
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+    }
+    .qa-item.open .qa-answer { display: block; }
+    .qa-answer strong { color: var(--text); }
+
+    /* Flow Diagram */
+    .flow {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 2rem;
+      margin-bottom: 3rem;
+      text-align: center;
+    }
+    .flow-steps { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.5rem; }
+    .flow-step {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 0.75rem 1.25rem;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+    .flow-step.green { border-color: rgba(34,197,94,0.4); color: var(--green); }
+    .flow-step.blue  { border-color: rgba(59,130,246,0.4); color: #60a5fa; }
+    .flow-step.purple { border-color: rgba(168,85,247,0.4); color: #c084fc; }
+    .flow-arrow { color: var(--muted); font-size: 1.5rem; }
+
+    /* Stats Summary */
+    .stats-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); gap: 1rem; margin-bottom: 3rem; }
+    .stat-box {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.25rem;
+      text-align: center;
+    }
+    .stat-num { font-size: 2.5rem; font-weight: 800; color: var(--green); }
+    .stat-lbl { font-size: 0.85rem; color: var(--muted); margin-top: 0.25rem; }
+
+    /* Competition Tips */
+    .tips-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 1rem; margin-bottom: 3rem; }
+    .tip-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.5rem;
+    }
+    .tip-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; }
+    .tip-icon { font-size: 1.75rem; }
+    .tip-title { font-size: 1rem; font-weight: 800; }
+    .tip-body { font-size: 0.87rem; color: var(--muted); line-height: 1.7; }
+
+    /* Final Card */
+    .final-card {
+      background: linear-gradient(135deg, rgba(34,197,94,0.1), rgba(14,165,233,0.1));
+      border: 1px solid rgba(34,197,94,0.3);
+      border-radius: 1rem;
+      padding: 2.5rem;
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .final-card h2 { font-size: 1.75rem; font-weight: 800; color: var(--green); margin-bottom: 0.5rem; }
+    .final-card p { color: var(--muted); font-size: 1rem; }
+
+    code {
+      background: rgba(34,197,94,0.1);
+      color: var(--green);
+      padding: 0.1rem 0.4rem;
+      border-radius: 0.3rem;
+      font-family: monospace;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <h1>🏫 موقع المدارس العمرية</h1>
+  <p>توثيق كامل للمشروع — كل ملف وكل ميزة وكل سؤال ممكن يُسأل</p>
+  <div class="hero-badges">
+    <span class="hero-badge" style="background:rgba(34,197,94,0.15);color:#4ade80">✅ مكتمل 100%</span>
+    <span class="hero-badge" style="background:rgba(59,130,246,0.15);color:#60a5fa">🌐 Front-End + Back-End</span>
+    <span class="hero-badge" style="background:rgba(245,158,11,0.15);color:#fbbf24">🏆 جاهز للمسابقة</span>
+    <span class="hero-badge" style="background:rgba(168,85,247,0.15);color:#c084fc">🛡️ محمي وآمن</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Stats -->
+  <div class="stats-row" style="margin-top:2rem">
+    <div class="stat-box"><div class="stat-num">12</div><div class="stat-lbl">ملف في المشروع</div></div>
+    <div class="stat-box"><div class="stat-num">4</div><div class="stat-lbl">جداول في قاعدة البيانات</div></div>
+    <div class="stat-box"><div class="stat-num">9</div><div class="stat-lbl">ميزات Back-End</div></div>
+    <div class="stat-box"><div class="stat-num">2</div><div class="stat-lbl">خدمات مجانية</div></div>
+  </div>
+
+  <!-- Tech Stack -->
+  <div class="section-title">
+    <span class="section-icon">⚙️</span>
+    <h2>التقنيات المستخدمة في المشروع</h2>
+  </div>
+  <div class="tech-grid">
+    <div class="tech-card">
+      <div class="tech-logo">🌐</div>
+      <div class="tech-name">HTML5</div>
+      <div class="tech-role">هيكل الموقع وكل الصفحات</div>
+      <span class="tech-free">مجاني</span>
+    </div>
+    <div class="tech-card">
+      <div class="tech-logo">🎨</div>
+      <div class="tech-name">CSS3</div>
+      <div class="tech-role">تصميم الموقع والثيم الداكن والفاتح</div>
+      <span class="tech-free">مجاني</span>
+    </div>
+    <div class="tech-card">
+      <div class="tech-logo">⚡</div>
+      <div class="tech-name">JavaScript</div>
+      <div class="tech-role">كل التفاعلات والحركات والسلايدر</div>
+      <span class="tech-free">مجاني</span>
+    </div>
+    <div class="tech-card">
+      <div class="tech-logo">🗄️</div>
+      <div class="tech-name">Supabase</div>
+      <div class="tech-role">قاعدة البيانات والـ API — بديل Node.js</div>
+      <span class="tech-free">مجاني</span>
+    </div>
+    <div class="tech-card">
+      <div class="tech-logo">🐙</div>
+      <div class="tech-name">GitHub Pages</div>
+      <div class="tech-role">استضافة الموقع مجاناً</div>
+      <span class="tech-free">مجاني</span>
+    </div>
+    <div class="tech-card">
+      <div class="tech-logo">🔤</div>
+      <div class="tech-name">Tajawal Font</div>
+      <div class="tech-role">خط عربي احترافي من Google Fonts</div>
+      <span class="tech-free">مجاني</span>
+    </div>
+  </div>
+
+  <!-- How it works flow -->
+  <div class="section-title">
+    <span class="section-icon">🔄</span>
+    <h2>كيف يعمل الموقع — من A إلى Z</h2>
+  </div>
+  <div class="flow" style="margin-bottom:3rem">
+    <div class="flow-steps">
+      <div class="flow-step green">👤 زائر يفتح الموقع</div>
+      <div class="flow-arrow">←</div>
+      <div class="flow-step blue">🌐 GitHub Pages يحمّل الملفات</div>
+      <div class="flow-arrow">←</div>
+      <div class="flow-step green">📋 يملأ نموذج تسجيل</div>
+      <div class="flow-arrow">←</div>
+      <div class="flow-step blue">⚡ JavaScript يرسل البيانات</div>
+      <div class="flow-arrow">←</div>
+      <div class="flow-step purple">🗄️ Supabase يحفظها في قاعدة البيانات</div>
+      <div class="flow-arrow">←</div>
+      <div class="flow-step green">🛠️ الأدمن يشوفها في لوحة التحكم</div>
+    </div>
+  </div>
+
+  <!-- All Files -->
+  <div class="section-title">
+    <span class="section-icon">📁</span>
+    <h2>كل ملفات المشروع — شرح كامل</h2>
+  </div>
+  <div class="files-grid">
+
+    <!-- index.html -->
+    <div class="file-card original">
+      <div class="file-header">
+        <div class="file-emoji">🌐</div>
+        <div class="file-name-box">
+          <h3>index.html</h3>
+          <span class="file-tag tag-original">أصلي + محدّث</span>
+        </div>
+      </div>
+      <div class="file-desc">الصفحة الرئيسية للموقع — هي أول شيء يراه الزائر عند فتح الرابط</div>
+      <ul class="file-points">
+        <li><span class="point-icon">🏠</span> الصفحة الرئيسية الكاملة للمدارس العمرية</li>
+        <li><span class="point-icon">🔗</span> تربط كل الملفات الجديدة ببعض عبر script tags</li>
+        <li><span class="point-icon">📱</span> متجاوب مع كل الشاشات موبايل وتابلت وكمبيوتر</li>
+        <li><span class="point-icon">🌙</span> يدعم الوضع الداكن والفاتح</li>
+        <li><span class="point-icon">🇸🇦</span> عربي كامل من اليمين لليسار RTL</li>
+      </ul>
+    </div>
+
+    <!-- styles.css -->
+    <div class="file-card original">
+      <div class="file-header">
+        <div class="file-emoji">🎨</div>
+        <div class="file-name-box">
+          <h3>styles.css</h3>
+          <span class="file-tag tag-original">أصلي — لم يتغير</span>
+        </div>
+      </div>
+      <div class="file-desc">كل التصميم البصري للموقع من ألوان وخطوط ومسافات</div>
+      <ul class="file-points">
+        <li><span class="point-icon">🎨</span> ألوان الموقع الخضراء والزرقاء</li>
+        <li><span class="point-icon">🌙</span> CSS Variables للتبديل بين الثيمين</li>
+        <li><span class="point-icon">✨</span> تأثيرات الحركة والـ Animations</li>
+        <li><span class="point-icon">📐</span> Grid و Flexbox للتخطيط</li>
+      </ul>
+    </div>
+
+    <!-- script.js -->
+    <div class="file-card original">
+      <div class="file-header">
+        <div class="file-emoji">⚡</div>
+        <div class="file-name-box">
+          <h3>script.js</h3>
+          <span class="file-tag tag-original">أصلي — لم يتغير</span>
+        </div>
+      </div>
+      <div class="file-desc">كل التفاعلات الأصلية في الموقع</div>
+      <ul class="file-points">
+        <li><span class="point-icon">🌙</span> زر تبديل الثيم الداكن والفاتح</li>
+        <li><span class="point-icon">🍔</span> قائمة الموبايل البرغر</li>
+        <li><span class="point-icon">🖼️</span> السلايدر في الهيرو</li>
+        <li><span class="point-icon">🔢</span> عداد الإحصائيات المتحرك</li>
+        <li><span class="point-icon">📜</span> التمرير السلس بين الأقسام</li>
+      </ul>
+    </div>
+
+    <!-- supabase.js -->
+    <div class="file-card new">
+      <div class="file-header">
+        <div class="file-emoji">🔌</div>
+        <div class="file-name-box">
+          <h3>supabase.js</h3>
+          <span class="file-tag tag-new">جديد — Back-End</span>
+        </div>
+      </div>
+      <div class="file-desc">الجسر الذي يربط الموقع بقاعدة البيانات — أهم ملف في الـ Back-End</div>
+      <ul class="file-points">
+        <li><span class="point-icon">🔑</span> يحتوي على مفاتيح الاتصال بـ Supabase</li>
+        <li><span class="point-icon">🌉</span> ينشئ كائن <code>db</code> تستخدمه كل الملفات</li>
+        <li><span class="point-icon">📡</span> يفتح القناة بين الموقع والسيرفر</li>
+        <li><span class="point-icon">⚡</span> يتحمل أول شيء قبل كل الملفات</li>
+      </ul>
+    </div>
+
+    <!-- notifications.js -->
+    <div class="file-card new">
+      <div class="file-header">
+        <div class="file-emoji">🔔</div>
+        <div class="file-name-box">
+          <h3>notifications.js</h3>
+          <span class="file-tag tag-new">جديد — UX</span>
+        </div>
+      </div>
+      <div class="file-desc">نظام الإشعارات الجميلة التي تظهر أسفل الشاشة</div>
+      <ul class="file-points">
+        <li><span class="point-icon">✅</span> رسائل نجاح خضراء</li>
+        <li><span class="point-icon">❌</span> رسائل خطأ حمراء</li>
+        <li><span class="point-icon">ℹ️</span> رسائل معلومات زرقاء</li>
+        <li><span class="point-icon">🎯</span> تختفي تلقائياً بعد 3.5 ثانية</li>
+      </ul>
+    </div>
+
+    <!-- comments.js -->
+    <div class="file-card new">
+      <div class="file-header">
+        <div class="file-emoji">💬</div>
+        <div class="file-name-box">
+          <h3>comments.js</h3>
+          <span class="file-tag tag-new">جديد — Back-End</span>
+        </div>
+      </div>
+      <div class="file-desc">نظام التعليقات الحقيقية — بدل localStorage أصبحت في قاعدة بيانات يراها الجميع</div>
+      <ul class="file-points">
+        <li><span class="point-icon">💾</span> يحفظ التعليقات في Supabase</li>
+        <li><span class="point-icon">👁️</span> يجيب التعليقات ويعرضها عند فتح الصفحة</li>
+        <li><span class="point-icon">✅</span> يعرض المعتمدة فقط من الأدمن</li>
+        <li><span class="point-icon">🛡️</span> محمي من هجمات XSS</li>
+      </ul>
+    </div>
+
+    <!-- register.js -->
+    <div class="file-card new">
+      <div class="file-header">
+        <div class="file-emoji">📋</div>
+        <div class="file-name-box">
+          <h3>register.js</h3>
+          <span class="file-tag tag-new">جديد — Back-End</span>
+        </div>
+      </div>
+      <div class="file-desc">نظام التسجيل — يحفظ طلبات التسجيل في قاعدة البيانات</div>
+      <ul class="file-points">
+        <li><span class="point-icon">📥</span> يأخذ بيانات النموذج ويرسلها لـ Supabase</li>
+        <li><span class="point-icon">✅</span> يتحقق من الحقول قبل الإرسال</li>
+        <li><span class="point-icon">🔔</span> يعرض إشعار نجاح أو خطأ</li>
+        <li><span class="point-icon">🗃️</span> يحفظ: الاسم، الهاتف، الطالب، المرحلة، الفرع</li>
+      </ul>
+    </div>
+
+    <!-- visit-counter.js -->
+    <div class="file-card new">
+      <div class="file-header">
+        <div class="file-emoji">👁️</div>
+        <div class="file-name-box">
+          <h3>visit-counter.js</h3>
+          <span class="file-tag tag-new">جديد — Back-End</span>
+        </div>
+      </div>
+      <div class="file-desc">عداد الزيارات الحي — يحسب كم شخص زار الموقع</div>
+      <ul class="file-points">
+        <li><span class="point-icon">📊</span> يسجّل كل زيارة جديدة في Supabase</li>
+        <li><span class="point-icon">⏱️</span> لا يحسب نفس الشخص مرتين في ساعة</li>
+        <li><span class="point-icon">🔢</span> يعرض الرقم الكلي في الإحصائيات</li>
+      </ul>
+    </div>
+
+    <!-- news-manager.js -->
+    <div class="file-card new">
+      <div class="file-header">
+        <div class="file-emoji">📰</div>
+        <div class="file-name-box">
+          <h3>news-manager.js</h3>
+          <span class="file-tag tag-new">جديد — Back-End</span>
+        </div>
+      </div>
+      <div class="file-desc">إدارة الأخبار — الأدمن يضيف أخبار تظهر تلقائياً في الموقع</div>
+      <ul class="file-points">
+        <li><span class="point-icon">➕</span> إضافة أخبار جديدة من لوحة التحكم</li>
+        <li><span class="point-icon">📤</span> نشر أو إلغاء نشر أي خبر</li>
+        <li><span class="point-icon">🗑️</span> حذف الأخبار القديمة</li>
+        <li><span class="point-icon">🌐</span> تظهر في الموقع تلقائياً بدون تعديل الكود</li>
+      </ul>
+    </div>
+
+    <!-- admin.html -->
+    <div class="file-card admin">
+      <div class="file-header">
+        <div class="file-emoji">🛠️</div>
+        <div class="file-name-box">
+          <h3>admin.html</h3>
+          <span class="file-tag tag-admin">لوحة التحكم</span>
+        </div>
+      </div>
+      <div class="file-desc">صفحة لوحة تحكم الأدمن — سرية لا يعرفها إلا أنت</div>
+      <ul class="file-points">
+        <li><span class="point-icon">🔐</span> محمية بكلمة مرور</li>
+        <li><span class="point-icon">📊</span> نظرة عامة على كل البيانات</li>
+        <li><span class="point-icon">📋</span> عرض وإدارة طلبات التسجيل</li>
+        <li><span class="point-icon">💬</span> الموافقة على التعليقات أو حذفها</li>
+        <li><span class="point-icon">📰</span> إضافة وحذف الأخبار</li>
+        <li><span class="point-icon">👁️</span> إحصائيات الزيارات</li>
+      </ul>
+    </div>
+
+    <!-- admin.css -->
+    <div class="file-card admin">
+      <div class="file-header">
+        <div class="file-emoji">🎨</div>
+        <div class="file-name-box">
+          <h3>admin.css</h3>
+          <span class="file-tag tag-admin">لوحة التحكم</span>
+        </div>
+      </div>
+      <div class="file-desc">تصميم لوحة التحكم — مستقل تماماً عن تصميم الموقع الرئيسي</div>
+      <ul class="file-points">
+        <li><span class="point-icon">🖥️</span> تصميم Dashboard احترافي</li>
+        <li><span class="point-icon">📱</span> يشتغل على الموبايل أيضاً</li>
+        <li><span class="point-icon">🌙</span> وضع داكن دائماً</li>
+      </ul>
+    </div>
+
+    <!-- admin.js -->
+    <div class="file-card admin">
+      <div class="file-header">
+        <div class="file-emoji">⚙️</div>
+        <div class="file-name-box">
+          <h3>admin.js</h3>
+          <span class="file-tag tag-admin">لوحة التحكم</span>
+        </div>
+      </div>
+      <div class="file-desc">عقل لوحة التحكم — كل المنطق والعمليات</div>
+      <ul class="file-points">
+        <li><span class="point-icon">🔑</span> نظام تسجيل الدخول بكلمة مرور</li>
+        <li><span class="point-icon">📊</span> تحميل الإحصائيات من Supabase</li>
+        <li><span class="point-icon">🔄</span> تحديث حالة الطلبات</li>
+        <li><span class="point-icon">📥</span> تصدير البيانات كـ Excel/CSV</li>
+        <li><span class="point-icon">🔄</span> تحديث تلقائي كل دقيقة</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- Database Tables -->
+  <div class="section-title">
+    <span class="section-icon">🗄️</span>
+    <h2>جداول قاعدة البيانات في Supabase</h2>
+  </div>
+  <div class="files-grid" style="margin-bottom:3rem">
+
+    <div class="file-card setup">
+      <div class="file-header">
+        <div class="file-emoji">💬</div>
+        <div class="file-name-box">
+          <h3>comments</h3>
+          <span class="file-tag tag-setup">جدول Supabase</span>
+        </div>
+      </div>
+      <div class="file-desc">يحفظ كل تعليق يكتبه الزوار</div>
+      <ul class="file-points">
+        <li><span class="point-icon">📝</span> id, name, role, text</li>
+        <li><span class="point-icon">✅</span> approved — هل وافق الأدمن؟</li>
+        <li><span class="point-icon">📅</span> created_at — تاريخ التعليق</li>
+      </ul>
+    </div>
+
+    <div class="file-card setup">
+      <div class="file-header">
+        <div class="file-emoji">📋</div>
+        <div class="file-name-box">
+          <h3>registrations</h3>
+          <span class="file-tag tag-setup">جدول Supabase</span>
+        </div>
+      </div>
+      <div class="file-desc">يحفظ كل طلب تسجيل يرسله الزوار</div>
+      <ul class="file-points">
+        <li><span class="point-icon">👤</span> parent_name, phone</li>
+        <li><span class="point-icon">🎓</span> student_name, grade, branch</li>
+        <li><span class="point-icon">📊</span> status — جديد / تمت المراجعة / تم التواصل</li>
+      </ul>
+    </div>
+
+    <div class="file-card setup">
+      <div class="file-header">
+        <div class="file-emoji">📰</div>
+        <div class="file-name-box">
+          <h3>news</h3>
+          <span class="file-tag tag-setup">جدول Supabase</span>
+        </div>
+      </div>
+      <div class="file-desc">يحفظ الأخبار التي يضيفها الأدمن</div>
+      <ul class="file-points">
+        <li><span class="point-icon">📰</span> title, category, content</li>
+        <li><span class="point-icon">🖼️</span> image — صورة الخبر</li>
+        <li><span class="point-icon">📤</span> published — منشور أم مسودة</li>
+      </ul>
+    </div>
+
+    <div class="file-card setup">
+      <div class="file-header">
+        <div class="file-emoji">👁️</div>
+        <div class="file-name-box">
+          <h3>visits</h3>
+          <span class="file-tag tag-setup">جدول Supabase</span>
+        </div>
+      </div>
+      <div class="file-desc">يحفظ كل زيارة للموقع</div>
+      <ul class="file-points">
+        <li><span class="point-icon">🆔</span> id — معرف الزيارة</li>
+        <li><span class="point-icon">📅</span> visited_at — وقت الزيارة</li>
+        <li><span class="point-icon">📊</span> يُستخدم لحساب إجمالي الزيارات</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- Q&A -->
+  <div class="section-title">
+    <span class="section-icon">❓</span>
+    <h2>أسئلة قد تُسأل في المسابقة — مع الإجابات</h2>
+  </div>
+  <div class="qa-list">
+
+    <div class="qa-item open">
+      <div class="qa-question" onclick="toggleQA(this)">
+        <span class="qa-q-icon">❓</span>
+        ما الفرق بين الـ Front-End والـ Back-End في مشروعك؟
+        <span class="qa-arrow">▼</span>
+      </div>
+      <div class="qa-answer">
+        <strong>الـ Front-End</strong> هو كل ما يراه الزائر: التصميم، الألوان، السلايدر، القوائم — وهو مبني بـ HTML وCSS وJavaScript.<br><br>
+        <strong>الـ Back-End</strong> هو الجزء الخفي الذي يحفظ البيانات ويديرها — وهو مبني بـ Supabase الذي يوفر قاعدة بيانات وAPI جاهزة. عندما يرسل الزائر طلب تسجيل، الـ Back-End يحفظه ويجعله متاحاً للأدمن.
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-question" onclick="toggleQA(this)">
+        <span class="qa-q-icon">❓</span>
+        لماذا اخترت Supabase بدل Node.js أو PHP؟
+        <span class="qa-arrow">▼</span>
+      </div>
+      <div class="qa-answer">
+        Supabase يوفر كل ما يوفره Node.js + Express + قاعدة بيانات في خدمة واحدة مجانية. بدل ما أبني API من الصفر وأدفع استضافة، Supabase يعطيني API جاهزة وقاعدة بيانات PostgreSQL وأمان مدمج — وكل هذا مجاناً. هذا يوفر وقتاً وجهداً ويسمح لي بالتركيز على جودة الموقع.
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-question" onclick="toggleQA(this)">
+        <span class="qa-q-icon">❓</span>
+        كيف تحمي الموقع من الهكر؟
+        <span class="qa-arrow">▼</span>
+      </div>
+      <div class="qa-answer">
+        المشروع محمي بعدة طبقات:<br><br>
+        <strong>1. RLS (Row Level Security)</strong> — قواعد في Supabase تمنع أي شخص من قراءة البيانات السرية مثل طلبات التسجيل حتى لو عنده المفتاح.<br><br>
+        <strong>2. حماية XSS</strong> — كل نص يكتبه المستخدم يتم تنقيته قبل عرضه حتى لا يقدر أحد يحقن كود خبيث.<br><br>
+        <strong>3. Rate Limiting</strong> — حد أقصى 10 تعليقات في الساعة و3 طلبات تسجيل في 24 ساعة لمنع السبام.<br><br>
+        <strong>4. التعليقات تحتاج موافقة</strong> — لا يظهر أي تعليق بدون موافقة الأدمن أولاً.
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-question" onclick="toggleQA(this)">
+        <span class="qa-q-icon">❓</span>
+        كم تكلف استضافة هذا الموقع؟
+        <span class="qa-arrow">▼</span>
+      </div>
+      <div class="qa-answer">
+        <strong>صفر دولار — مجاني 100%!</strong><br><br>
+        GitHub Pages مجاني لاستضافة الملفات الثابتة.<br>
+        Supabase مجاني حتى 500MB قاعدة بيانات وحتى 2GB bandwidth شهرياً — وهذا يكفي لموقع مدرسة بسهولة.
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-question" onclick="toggleQA(this)">
+        <span class="qa-q-icon">❓</span>
+        كيف يعمل نظام الأدمن؟
+        <span class="qa-arrow">▼</span>
+      </div>
+      <div class="qa-answer">
+        لوحة التحكم موجودة في <code>admin.html</code> — صفحة سرية لا يعرفها إلا الأدمن. عند الدخول بكلمة المرور، تظهر لوحة تحكم كاملة تتصل بـ Supabase مباشرة وتجيب كل البيانات. الأدمن يقدر يوافق على التعليقات، يغير حالة الطلبات، يضيف أخبار، ويشوف إحصائيات الزيارات — كل هذا في الوقت الفعلي.
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-question" onclick="toggleQA(this)">
+        <span class="qa-q-icon">❓</span>
+        ما الفرق بين موقعك والموقع الأصلي للمدارس العمرية؟
+        <span class="qa-arrow">▼</span>
+      </div>
+      <div class="qa-answer">
+        الموقع الأصلي ثابت ومحدود. موقعي يضيف:<br><br>
+        ✅ تصميم عصري داكن وفاتح<br>
+        ✅ نظام تعليقات حقيقي متصل بقاعدة بيانات<br>
+        ✅ نظام تسجيل متكامل يحفظ البيانات<br>
+        ✅ لوحة تحكم للإدارة<br>
+        ✅ عداد زيارات حي<br>
+        ✅ إدارة أخبار ديناميكية<br>
+        ✅ حماية أمنية كاملة<br>
+        ✅ سرعة عالية لأن الاستضافة على GitHub Pages
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-question" onclick="toggleQA(this)">
+        <span class="qa-q-icon">❓</span>
+        كيف تضيف خبر جديد للموقع؟
+        <span class="qa-arrow">▼</span>
+      </div>
+      <div class="qa-answer">
+        1. افتح <code>admin.html</code> وسجّل دخولك<br>
+        2. اضغط على <strong>إدارة الأخبار</strong> من القائمة<br>
+        3. اضغط <strong>+ إضافة خبر جديد</strong><br>
+        4. اكتب العنوان والمحتوى واختر التصنيف<br>
+        5. اضغط حفظ — الخبر يظهر في الموقع فوراً بدون ما تلمس أي كود!
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-question" onclick="toggleQA(this)">
+        <span class="qa-q-icon">❓</span>
+        ماذا يحدث عندما يرسل زائر تعليقاً؟
+        <span class="qa-arrow">▼</span>
+      </div>
+      <div class="qa-answer">
+        1. الزائر يكتب تعليقه ويضغط إرسال<br>
+        2. <code>comments.js</code> يرسل البيانات لـ Supabase<br>
+        3. يُحفظ في جدول <code>comments</code> بحالة <strong>غير معتمد</strong><br>
+        4. الأدمن يشوفه في لوحة التحكم تحت "بانتظار الموافقة"<br>
+        5. الأدمن يضغط موافقة → التعليق يظهر للجميع في الموقع ✅<br><br>
+        هذا يمنع أي تعليق غير لائق من الظهور.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Competition Tips -->
+  <div class="section-title">
+    <span class="section-icon">🏆</span>
+    <h2>نصائح للمسابقة</h2>
+  </div>
+  <div class="tips-grid" style="margin-bottom:3rem">
+    <div class="tip-card">
+      <div class="tip-header"><span class="tip-icon">🎯</span><h3 class="tip-title">ابدأ بالـ Demo</h3></div>
+      <div class="tip-body">افتح الموقع مباشرة وأرسل طلب تسجيل أمام اللجنة، ثم افتح لوحة التحكم وأريهم الطلب وصل — هذا أقوى من أي كلام</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-header"><span class="tip-icon">🔐</span><h3 class="tip-title">غيّر كلمة المرور</h3></div>
+      <div class="tip-body">قبل المسابقة غيّر كلمة مرور الأدمن في <code>admin.js</code> واحفظها في مكان آمن</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-header"><span class="tip-icon">📱</span><h3 class="tip-title">أرِهم الموبايل</h3></div>
+      <div class="tip-body">افتح الموقع على الموبايل وأرِهم كيف يبدو احترافياً — هذا يُظهر إنك فكرت في كل المستخدمين</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-header"><span class="tip-icon">🌙</span><h3 class="tip-title">أرِهم الثيمين</h3></div>
+      <div class="tip-body">اضغط زر تبديل الثيم أمامهم — الانتقال السلس بين الداكن والفاتح دائماً يُبهر اللجنة</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-header"><span class="tip-icon">🛡️</span><h3 class="tip-title">اذكر الأمان</h3></div>
+      <div class="tip-body">اذكر إن الموقع محمي بـ RLS وحماية XSS وRate Limiting — هذا يُظهر نضج تقني عالي</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-header"><span class="tip-icon">💰</span><h3 class="tip-title">اذكر إنه مجاني</h3></div>
+      <div class="tip-body">الموقع كامل الـ Back-End والاستضافة مجاني 100% — هذا يُظهر قدرتك على إيجاد حلول ذكية</div>
+    </div>
+  </div>
+
+  <!-- Final -->
+  <div class="final-card">
+    <div style="font-size:3rem;margin-bottom:1rem">🏆</div>
+    <h2>مشروعك جاهز للمسابقة!</h2>
+    <p style="margin-top:0.5rem">موقع احترافي كامل بـ Front-End وBack-End وأمان وإدارة — كل شيء مجاني ويعمل 100%</p>
+    <p style="margin-top:1rem;font-size:0.9rem;color:var(--muted)">حظاً موفقاً يا بطل 🌟</p>
+  </div>
+
+</div>
+
+<script>
+  function toggleQA(el) {
+    el.parentElement.classList.toggle('open');
+  }
+</script>
+</body>
+</html>
