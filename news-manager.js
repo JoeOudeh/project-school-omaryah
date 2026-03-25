@@ -135,8 +135,8 @@ newsGrid.innerHTML = data.map(n => `
         <div class="news-content">
           <div class="news-category">${n.category}</div>
           <h3>${n.title}</h3>
-          <p>${n.content.substring(0, 120)}...</p>
-          <div class="news-meta">
+<p>${(n.content || '').substring(0, 120)}...</p>          
+<div class="news-meta">
             <span>${new Date(n.created_at).toLocaleDateString('ar-SA', { year:'numeric', month:'long', day:'numeric' })}</span>
           </div>
         </div>
