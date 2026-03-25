@@ -129,8 +129,8 @@ async function loadNewsOnHomepage() {
 
     if (!data || data.length === 0) return;
 
-    newsGrid.innerHTML = data.map(n => `
-      <div class="news-card fade-in">
+newsGrid.innerHTML = data.map(n => `
+    <div class="news-card fade-in visible">
         ${n.image ? `<div class="news-image"><img src="${n.image}" alt="${n.title}" loading="lazy"></div>` : ''}
         <div class="news-content">
           <div class="news-category">${n.category}</div>
